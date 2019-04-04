@@ -8,6 +8,7 @@ node {
     }
     stage ('Checkout') {
         checkout scm
+        echo "Checkout de codigo fuente ok"
     }
     /*stage 'Build & UnitTest'
         sh "docker build -t accountownerapp:B${BUILD_NUMBER} -f Dockerfile ."
