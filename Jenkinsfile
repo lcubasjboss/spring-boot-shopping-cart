@@ -9,14 +9,32 @@ pipeline {
         stage ('Checkout') {
             steps {
                    checkout scm
-                  echo "Checkout de codigo fuente OK"
+                   echo "Checkout de codigo fuente OK"
              }
         }
-        stage ('Build') {
+        stage ('Build App Code') {
             steps {
-                  sh "docker build -t accountownerapp:B${BUILD_NUMBER} -f Dockerfile ."
+                  sh 'mvn -B -DskipTests clean package' 
+                  sh 'mvn -Dmaven.test.failure.ignore=true install'
+                  echo "Build App Code Completed"
              }
         }   
+        
+        stage ('Unit Test App Code') {
+            steps {
+                  sh 'mvn test' 
+                  echo "Unit Test App Code Completed"                
+             }
+        }   
+        
+         stage ('Docker Image Build') {
+            steps {
+                  sh "/usr/bin/docker build -t accountownerapp:B${BUILD_NUMBER} -f Dockerfile ."
+                  echo "Docker Image Build Completed"                
+             }
+        }   
+        
+        
                /*
          stage (UnitTest') {
              sh "docker build -t accountownerapp:test-B${BUILD_NUMBER} -f Dockerfile.Integration ."
