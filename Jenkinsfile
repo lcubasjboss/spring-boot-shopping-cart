@@ -2,15 +2,21 @@ pipeline {
     agent any
     stages {
         stage ('Clone') {
-            git url: 'https://github.com/lcubasjboss/spring-boot-shopping-cart.git'
+            steps {
+                  git url: 'https://github.com/lcubasjboss/spring-boot-shopping-cart.git'
+            }
         }
         stage ('Checkout') {
-            checkout scm
-            echo "Checkout de codigo fuente OK"
+            steps {
+                   checkout scm
+                  echo "Checkout de codigo fuente OK"
+             }
         }
-        stage ('Build) {
-            sh "docker build -t accountownerapp:B${BUILD_NUMBER} -f Dockerfile ."
-         }
+        stage ('Build') {
+            steps {
+                  sh "docker build -t accountownerapp:B${BUILD_NUMBER} -f Dockerfile ."
+             }
+        }   
                /*
          stage (UnitTest') {
              sh "docker build -t accountownerapp:test-B${BUILD_NUMBER} -f Dockerfile.Integration ."
