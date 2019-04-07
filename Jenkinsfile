@@ -10,11 +10,13 @@ pipeline {
             steps {
                    checkout scm
                    echo "Checkout de codigo fuente OK"
+                 echo '$MVN_HOME'
              }
         }
         stage ('Build App Code') {
             steps {
-                  sh 'mvn -B -DskipTests clean package' 
+                  echo '$MVN_HOME'
+                  sh '$MVN_HOME/bin/mvn -B -DskipTests clean package' 
                   sh 'mvn -Dmaven.test.failure.ignore=true install'
                   echo "Build App Code Completed"
              }
