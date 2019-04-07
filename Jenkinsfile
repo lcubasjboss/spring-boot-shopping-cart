@@ -8,23 +8,21 @@ pipeline {
         }
         stage ('Checkout') {
             steps {
-                   checkout scm
-                   echo "Checkout de codigo fuente OK"
-                 echo '$MVN_HOME'
+                  checkout scm
+                  echo "Checkout de codigo fuente OK"
              }
         }
         stage ('Build App Code') {
             steps {
-                  echo '$MVN_HOME'
-                  sh '$MVN_HOME/bin/mvn -B -DskipTests clean package' 
-                  sh 'mvn -Dmaven.test.failure.ignore=true install'
+                  sh '/opt/apache-maven-3.3.9/bin/mvn -B -DskipTests clean package' 
+                  sh '/opt/apache-maven-3.3.9/bin/mvn -Dmaven.test.failure.ignore=true install'
                   echo "Build App Code Completed"
              }
         }   
         
         stage ('Unit Test App Code') {
             steps {
-                  sh 'mvn test' 
+                  sh '/opt/apache-maven-3.3.9/bin/mvn test' 
                   echo "Unit Test App Code Completed"                
              }
         }   
