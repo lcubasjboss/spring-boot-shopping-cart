@@ -14,6 +14,7 @@ pipeline {
         }
         stage ('Build App Code') {
             steps {
+                  echo $MAVEN_HOME
                   sh '/opt/apache-maven-3.3.9/bin/mvn -B -DskipTests clean package' 
                   sh '/opt/apache-maven-3.3.9/bin/mvn -Dmaven.test.failure.ignore=true install'
                   echo "Build App Code Completed"
