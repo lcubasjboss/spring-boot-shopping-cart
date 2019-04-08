@@ -35,7 +35,6 @@ pipeline {
          stage ('Build Docker Image') {
             steps {
                   sh 'sudo /usr/bin/docker build -t shopping-cart:dev -f docker/Dockerfile . '
-                   sh 'sudo /usr/bin/docker build -t shopping-cart:dev -f docker/Dockerfile . '
                   sh 'sudo /usr/bin/docker tag shopping-cart:dev lcubasibm/shopping-cart:latest'
                   echo "Docker Image Build & Tag Completed"                
              }
@@ -45,9 +44,9 @@ pipeline {
             steps {
                 withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
                     sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
-                    sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
                     echo "Push Docker Image Completed"                
-             }
+                } 
+            }
         }   
         
         
