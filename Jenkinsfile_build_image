@@ -1,15 +1,9 @@
   pipeline {
     agent any
     stages {
-     stage ('Checkout') {
+     stage ('Build App Code') {
             steps {
-                  echo "=========================="
-                  echo "Inicializando Checkout Stage"
-                  echo "=========================="
-                  checkout scm
-                  echo "=========================="
-                  echo "Finalizando Checkout Stage"
-                  echo "=========================="
+                 sh '/opt/apache-maven-3.3.9/bin/mvn -B -DskipTests clean package' 
              }
       }
       stage ('Build Docker Image') {
