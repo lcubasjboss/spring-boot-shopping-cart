@@ -42,10 +42,11 @@ pipeline {
         
          stage ('Push Docker Image') {
             steps {
-                withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
+                //withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
+                    sh 'sudo /usr/bin/docker login -u lcubasibm -p DockerHub2019.'
                     sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
                     echo "Push Docker Image Completed"                
-                } 
+                //} 
             }
         }   
         
