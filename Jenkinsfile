@@ -90,14 +90,14 @@ pipeline {
               
         stage ('Deploy Docker Image to EC2 instance') {
             steps {
-                 echo "================================================="
+              echo "================================================="
                  echo "Inicializando Deploy Docker Image to EC2 instance"
                  echo "================================================="                           
-                 echo "Deteniendo contendores de shopping-cart"
-                 ssh jenkins@172.31.51.31 "sudo /usr/bin/docker stop $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"
-                 ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rm $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"
-                 echo "Borrando Imagen antigua"
-                 ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rmi $(sudo /usr/bin/docker images | grep shopping-cart | awk '{print $3}')"
+                 //echo "Deteniendo contendores de shopping-cart"
+                 //sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker stop $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"'
+                 //ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rm $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"
+                 //echo "Borrando Imagen antigua"
+                 //ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rmi $(sudo /usr/bin/docker images | grep shopping-cart | awk '{print $3}')"
                  echo "Arrancando Contenedor"
                  ssh jenkins@172.31.51.31 "sudo /usr/bin/docker pull docker.io/lcubasibm/shopping-cart:latest && sudo /usr/bin/docker run -d -p 8070:8070 --name shopping-cart docker.io/lcubasibm/shopping-cart:latest"
                  echo "================================================="
