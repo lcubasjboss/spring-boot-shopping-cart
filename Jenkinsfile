@@ -97,4 +97,5 @@ pipeline {
                  echo " Go to http://jenkinsciserver.tk:8070" 
             }
        }
+   }
 }
