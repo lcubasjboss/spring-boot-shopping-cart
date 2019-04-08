@@ -42,22 +42,17 @@ pipeline {
         
          stage ('Push Docker Image') {
             steps {
-                 withCredentials([
-      [$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerHub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS'],
-  ]){
-    
-      sh """(
-        echo "User: ${DOCKER_HUB_USER}"
-        echo "Pass: ${DOCKER_HUB_PASS}"
-      )"""
-    
-    sh "sudo /usr/bin/docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASS}"
-    sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
-    
+                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerHub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS'],]){
+                 sh """(
+                    echo "User: ${DOCKER_HUB_USER}"
+                    echo "Pass: ${DOCKER_HUB_PASS}"
+                )"""
+                sh "sudo /usr/bin/docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASS}"
+                sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
                 //    sh 'sudo /usr/bin/docker login -u lcubasibm -p DockerHub2019.'
-                 //   sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
-                    echo "Push Docker Image Completed"                
-                //} 
+                //   sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
+                echo "Push Docker Image Completed"                
+                } 
             }
         }   
         
@@ -81,4 +76,3 @@ pipeline {
                */
        }
 }
- 
