@@ -1,0 +1,40 @@
+  pipeline {
+    agent any
+    stages {
+      stage ('Build Docker Image') {
+                steps {
+                      echo "======================================"
+                      echo "Inicializando Build Docker Image Stage"
+                      echo "======================================"
+                      echo "current build number: ${currentBuild.number}"
+                      //echo "previous build number: ${currentBuild.previousBuild.getNumber()}"    
+                      sh "sudo /usr/bin/docker build -t shopping-cart:${currentBuild.number} -f docker/Dockerfile . "
+                      sh "sudo /usr/bin/docker tag shopping-cart:${currentBuild.number} lcubasibm/shopping-cart:${currentBuild.number}"
+                      sh "sudo /usr/bin/docker tag shopping-cart:${currentBuild.number} lcubasibm/shopping-cart:latest"
+                      echo "======================================"
+                      echo "Finalizando Build Docker Image Stage"
+                      echo "======================================"              
+                 }
+            }   
+
+             stage ('Push Docker Image') {
+                steps {
+                     echo "======================================"
+                     echo "Inicializando Push Docker Image Stage"
+                     echo "======================================" 
+                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerHub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS'],]){
+                     sh """(
+                        echo "User: ${DOCKER_HUB_USER}"
+                        echo "Pass: ${DOCKER_HUB_PASS}"
+                    )"""
+                    sh 'sudo /usr/bin/docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASS}'
+                    sh "sudo /usr/bin/docker push lcubasibm/shopping-cart:${currentBuild.number}"
+                    sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
+                    echo "======================================"
+                    echo "Finalizando Push Docker Image Stage"
+                    echo "======================================" 
+                    } 
+                }
+            }
+    }
+  } 
