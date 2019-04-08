@@ -59,8 +59,8 @@ pipeline {
                   echo "Inicializando Build Docker Image Stage"
                   echo "======================================"
                   echo "current build number: ${currentBuild.number}"
-                  //echo "previous build number: ${currentBuild.previousBuild.getNumber()}"             
-                  sh 'sudo /usr/bin/docker build -t shopping-cart:${currentBuild.number} -f docker/Dockerfile . '
+                  //echo "previous build number: ${currentBuild.previousBuild.getNumber()}"    
+                  sh "sudo /usr/bin/docker build -t shopping-cart:${currentBuild.number} -f docker/Dockerfile . "
                   sh 'sudo /usr/bin/docker tag shopping-cart:${currentBuild.number} lcubasibm/shopping-cart:${currentBuild.number}'
                   sh 'sudo /usr/bin/docker tag shopping-cart:${currentBuild.number} lcubasibm/shopping-cart:latest'
                   echo "======================================"
