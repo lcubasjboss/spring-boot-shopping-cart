@@ -34,7 +34,7 @@ pipeline {
         
          stage ('Docker Image Build') {
             steps {
-                  sh 'sudo /usr/bin/docker build -f docker/Dockerfile . '
+                  sh 'sudo /usr/bin/docker build -t shopping-cart:dev -f docker/Dockerfile . '
                   sh 'sudo /usr/bin/docker tag shopping-cart:dev lcubasibm/shopping-cart:latest'
                   echo "Docker Image Build & Tag Completed"                
              }
