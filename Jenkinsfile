@@ -127,6 +127,7 @@ pipeline {
                  echo "==========================================================="  
                  sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker stop shopping-cart"'
                  sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rm  shopping-cart"'
+                 sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rmi  docker.io/lcubasibm/shopping-cart"'
                  echo "Arrancando Contenedor"
                  sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker pull docker.io/lcubasibm/shopping-cart:latest && sudo /usr/bin/docker run -d -p 8070:8070 --name shopping-cart docker.io/lcubasibm/shopping-cart:latest"'
                  echo "================================================="
