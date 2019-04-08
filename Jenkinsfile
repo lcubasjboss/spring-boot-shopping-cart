@@ -93,7 +93,7 @@ pipeline {
            when {
             expression {
                    echo "actual build - ${currentBuild.number}"
-                   "${currentBuild.number}" == 1
+                   "${currentBuild.number}" == "1"
                        }
                 }
                steps {
@@ -118,7 +118,7 @@ pipeline {
            when { 
             expression {
                    echo "actual build - ${currentBuild.number}"
-                   "${currentBuild.number}" >= 2
+                   "${currentBuild.number}" >= "2"
                 }
             }
             steps{
