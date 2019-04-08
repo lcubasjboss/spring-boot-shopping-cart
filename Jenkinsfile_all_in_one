@@ -1,3 +1,24 @@
+Skip to content
+ 
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@lcubasjboss 
+1
+0 32 lcubasjboss/spring-boot-shopping-cart
+forked from reljicd/spring-boot-shopping-cart
+ Code  Pull requests 0  Projects 0  Wiki  Insights  Settings
+spring-boot-shopping-cart
+/
+Jenkinsfile_all_in_one
+@lcubasjboss lcubasjboss Rename Jenkinsfile to Jenkinsfile_all_in_one
+2b394b2 a minute ago
+137 lines (131 sloc)  6.8 KB
+    
 pipeline {
     agent any
     stages {
@@ -106,6 +127,7 @@ pipeline {
                      echo "Finalizando Deploy Docker Image to EC2 instance"
                      echo "=================================================" 
                      echo " Go to http://jenkinsciserver.tk:8070" 
+                     echo "By Luis Cubas! - Abril 2019"
                      }
         }
 
