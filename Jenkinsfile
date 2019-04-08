@@ -134,6 +134,7 @@ pipeline {
                  echo "Finalizando Deploy Docker Image to EC2 instance"
                  echo "=================================================" 
                  echo " Go to http://jenkinsciserver.tk:8070" 
+                 echo "By Luis Cubas! - Abril 2019"
             } 
        }
    }
