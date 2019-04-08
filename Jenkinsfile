@@ -94,9 +94,9 @@ pipeline {
                  echo "Inicializando Deploy Docker Image to EC2 instance"
                  echo "=================================================" 
                                                 
-                        echo "\nStop running Docker containers with image name shopping-cart, and remove them...n"
+                        echo "Deteniendo contendores de shopping-cart"
                         sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker stop $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"'
-                        sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rm $( sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"'
+                        sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rm $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"'
 
                         echo "Borrando Imagen antigua"
                         sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rmi $(sudo /usr/bin/docker images | grep shopping-cart | awk '{print $3}')"'
