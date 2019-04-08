@@ -80,6 +80,7 @@ pipeline {
                     echo "Pass: ${DOCKER_HUB_PASS}"
                 )"""
                 sh 'sudo /usr/bin/docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASS}'
+                sh "sudo /usr/bin/docker push lcubasibm/shopping-cart:${currentBuild.number}"
                 sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
                 echo "======================================"
                 echo "Finalizando Push Docker Image Stage"
