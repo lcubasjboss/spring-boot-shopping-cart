@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+    stages {
+        stage ('Clone') {
+            steps {
+                 echo "=========================="
+                 echo "Inicializando Clone Stage"
+                 echo "=========================="
+                 git url: 'https://github.com/lcubasjboss/spring-boot-shopping-cart.git'
+                 echo "=========================="
+                 echo "Finalizando Clone Stage"
+                 echo "=========================="
+            }
+        }
+        stage ('Checkout') {
+            steps {
+                  echo "=========================="
+                  echo "Inicializando Checkout Stage"
+                  echo "=========================="
+                  checkout scm
+                  echo "=========================="
+                  echo "Finalizando Checkout Stage"
+                  echo "=========================="
+             }
+        }
+        stage ('Build App Code') {
+            steps {
+                  echo "=================================="
+                  echo "Inicializando Build App Code Stage"
+                  echo "=================================="
+                  sh '/opt/apache-maven-3.3.9/bin/mvn -B -DskipTests clean package' 
+                  sh '/opt/apache-maven-3.3.9/bin/mvn -Dmaven.test.failure.ignore=true install'
+                  echo "=================================="
+                  echo "Finalizando Build App Code Stage"
+                  echo "=================================="
+             }
+        }   
+    }
+}
