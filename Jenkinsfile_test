@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+    stages {
+        stage ('Unit Test App Code') {
+            steps {
+                  echo "=================================="
+                  echo "Inicializando Build App Code Stage"
+                  echo "=================================="
+                  sh '/opt/apache-maven-3.3.9/bin/mvn test' 
+                  echo "=================================="
+                  echo "Finalizando Build App Code Stage"
+                  echo "=================================="           
+             }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }   
+    }
+}
