@@ -90,8 +90,26 @@ pipeline {
         }   
               
         stage ('Deploy Docker Image to EC2 instance') {
+           when { 
+            expression {
+                   echo "actual build - ${currentBuild.number}"
+                   "${currentBuild.number}" >= 2
+                }
+            }
+            steps{
+                 echo "================================================="
+                 echo "Inicializando Deploy Docker Image to EC2 instance"
+                 echo "================================================="  
+                 sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker stop shopping-cart"'
+                 echo "Arrancando Contenedor"
+                 sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker pull docker.io/lcubasibm/shopping-cart:latest && sudo /usr/bin/docker run -d -p 8070:8070 --name shopping-cart docker.io/lcubasibm/shopping-cart:latest"'
+                 echo "================================================="
+                 echo "Finalizando Deploy Docker Image to EC2 instance"
+                 echo "=================================================" 
+                 echo " Go to http://jenkinsciserver.tk:8070" 
+            }
             steps {
-              echo "================================================="
+                echo "================================================="
                  echo "Inicializando Deploy Docker Image to EC2 instance"
                  echo "================================================="                           
                  //echo "Deteniendo contendores de shopping-cart"
