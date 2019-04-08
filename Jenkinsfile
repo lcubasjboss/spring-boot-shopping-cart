@@ -92,22 +92,18 @@ pipeline {
             steps {
                  echo "================================================="
                  echo "Inicializando Deploy Docker Image to EC2 instance"
+                 echo "================================================="                           
+                 echo "Deteniendo contendores de shopping-cart"
+                 sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker stop $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"'
+                 sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rm $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"'
+                 echo "Borrando Imagen antigua"
+                 sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rmi $(sudo /usr/bin/docker images | grep shopping-cart | awk '{print $3}')"'
+                 echo "Arrancando Contenedor"
+                 sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker pull docker.io/lcubasibm/shopping-cart:latest && sudo /usr/bin/docker run -d -p 8070:8070 --name shopping-cart docker.io/lcubasibm/shopping-cart:latest"'            
+                 echo "================================================="
+                 echo "Finalizando Deploy Docker Image to EC2 instance"
                  echo "=================================================" 
-                                                
-                        echo "Deteniendo contendores de shopping-cart"
-                        sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker stop $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"'
-                        sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rm $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"'
-
-                        echo "Borrando Imagen antigua"
-                        sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rmi $(sudo /usr/bin/docker images | grep shopping-cart | awk '{print $3}')"'
-                                       
-                        echo "Arrancando Contenedor"
-                                              
-                         sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker pull docker.io/lcubasibm/shopping-cart:latest && sudo /usr/bin/docker run -d -p 8070:8070 --name shopping-cart docker.io/lcubasibm/shopping-cart:latest"'            
-                         echo "================================================="
-                         echo "Finalizando Deploy Docker Image to EC2 instance"
-                         echo "=================================================" 
-                         echo " Go to http://jenkinsciserver.tk:8070" 
+                 echo " Go to http://jenkinsciserver.tk:8070" 
             }
        }
    }
