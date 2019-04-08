@@ -97,9 +97,9 @@ pipeline {
                        }
                 }
                steps {
-                     echo "================================================="
-                     echo "Inicializando Deploy Docker Image to EC2 instance"
-                     echo "================================================="                           
+                     echo "==========================================================="
+                     echo "Inicializando Deploy Docker Image to EC2 instance - Build 1"
+                     echo "============================================================"                           
                      //echo "Deteniendo contendores de shopping-cart"
                      //sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker stop $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"'
                      //sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rm $(sudo /usr/bin/docker ps -a | grep shopping-cart | awk '{print $1}')"'
@@ -122,10 +122,11 @@ pipeline {
                 }
             }
             steps{
-                 echo "================================================="
-                 echo "Inicializando Deploy Docker Image to EC2 instance"
-                 echo "================================================="  
+                 echo "==========================================================="
+                 echo "Inicializando Deploy Docker Image to EC2 instance - Build n"
+                 echo "==========================================================="  
                  sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker stop shopping-cart"'
+                 sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker rm  shopping-cart"'
                  echo "Arrancando Contenedor"
                  sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker pull docker.io/lcubasibm/shopping-cart:latest && sudo /usr/bin/docker run -d -p 8070:8070 --name shopping-cart docker.io/lcubasibm/shopping-cart:latest"'
                  echo "================================================="
