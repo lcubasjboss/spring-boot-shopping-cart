@@ -3,27 +3,48 @@ pipeline {
     stages {
         stage ('Clone') {
             steps {
-                  git url: 'https://github.com/lcubasjboss/spring-boot-shopping-cart.git'
+                 echo "=========================="
+                 echo "Inicializando Clone Stage"
+                 echo "=========================="
+                 git url: 'https://github.com/lcubasjboss/spring-boot-shopping-cart.git'
+                 echo "=========================="
+                 echo "Finalizando Clone Stage"
+                 echo "=========================="
             }
         }
         stage ('Checkout') {
             steps {
+                  echo "=========================="
+                  echo "Inicializando Checkout Stage"
+                  echo "=========================="
                   checkout scm
-                  echo "Checkout de codigo fuente OK"
+                  echo "=========================="
+                  echo "Finalizando Checkout Stage"
+                  echo "=========================="
              }
         }
         stage ('Build App Code') {
             steps {
+                  echo "=================================="
+                  echo "Inicializando Build App Code Stage"
+                  echo "=================================="
                   sh '/opt/apache-maven-3.3.9/bin/mvn -B -DskipTests clean package' 
                   sh '/opt/apache-maven-3.3.9/bin/mvn -Dmaven.test.failure.ignore=true install'
-                  echo "Build App Code Completed"
+                  echo "=================================="
+                  echo "Finalizando Build App Code Stage"
+                  echo "=================================="
              }
         }   
         
         stage ('Unit Test App Code') {
             steps {
+                  echo "=================================="
+                  echo "Inicializando Build App Code Stage"
+                  echo "=================================="
                   sh '/opt/apache-maven-3.3.9/bin/mvn test' 
-                  echo "Unit Test App Code Completed"                
+                  echo "=================================="
+                  echo "Finalizando Build App Code Stage"
+                  echo "=================================="           
              }
             post {
                 always {
@@ -34,14 +55,22 @@ pipeline {
         
          stage ('Build Docker Image') {
             steps {
+                  echo "======================================"
+                  echo "Inicializando Build Docker Image Stage"
+                  echo "======================================"
                   sh 'sudo /usr/bin/docker build -t shopping-cart:dev -f docker/Dockerfile . '
                   sh 'sudo /usr/bin/docker tag shopping-cart:dev lcubasibm/shopping-cart:latest'
-                  echo "Docker Image Build & Tag Completed"                
+                  echo "======================================"
+                  echo "Finalizando Build Docker Image Stage"
+                  echo "======================================"              
              }
         }   
         
          stage ('Push Docker Image') {
             steps {
+                 echo "======================================"
+                 echo "Inicializando Push Docker Image Stage"
+                 echo "======================================" 
                  withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerHub', usernameVariable: 'DOCKER_HUB_USER', passwordVariable: 'DOCKER_HUB_PASS'],]){
                  sh """(
                     echo "User: ${DOCKER_HUB_USER}"
@@ -49,30 +78,23 @@ pipeline {
                 )"""
                 sh "sudo /usr/bin/docker login -u ${DOCKER_HUB_USER} -p ${DOCKER_HUB_PASS}"
                 sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
-                //    sh 'sudo /usr/bin/docker login -u lcubasibm -p DockerHub2019.'
-                //   sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
-                echo "Push Docker Image Completed"                
+                echo "======================================"
+                echo "Finalizando Push Docker Image Stage"
+                echo "======================================" 
                 } 
             }
         }   
-        
-        stage ('Deploy Docker Image') {
+              
+        stage ('Deploy Docker Image to EC2 instance') {
             steps {
-             sh 'ssh jenkins@172.31.51.31'
-             sh 'sudo /usr/bin/docker pull lcubasibm/shopping-cart:latest' 
-             sh 'sudo /usr/bin/docker run -d -p 8070:8070 --name shopping-cart shopping-cart:latest'              
+                 echo "================================================="
+                 echo "Inicializando Deploy Docker Image to EC2 instance"
+                 echo "=================================================" 
+                 sh 'ssh jenkins@172.31.51.31 "sudo /usr/bin/docker pull docker.io/lcubasibm/shopping-cart:latest && sudo /usr/bin/docker run -d -p 8070:8070 --name shopping-cart docker.io/lcubasibm/shopping-cart:latest"'            
+                 echo "================================================="
+                 echo "Finalizando Deploy Docker Image to EC2 instance"
+                 echo "=================================================" 
+                 echo " Go to http://jenkinsciserver.tk:8070" 
             }
-        }   
-        
-               /*
-         stage (UnitTest') {
-             sh "docker build -t accountownerapp:test-B${BUILD_NUMBER} -f Dockerfile.Integration ."
-         }
-
-         stage ('Integration Test') {
-            sh "docker-compose -f docker-compose.integration.yml up --force-recreate --abort-on-container-exit"
-            sh "docker-compose -f docker-compose.integration.yml down -v" 
-         }
-               */
        }
 }
