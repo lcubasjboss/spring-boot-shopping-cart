@@ -89,7 +89,7 @@ pipeline {
             }
         }   
               
-        stage ('Deploy Docker Image to EC2 instance') {
+        stage ('Deploy Docker Image to EC2 instance - Build 1') {
            when {
             expression {
                    echo "actual build - ${currentBuild.number}"
@@ -112,6 +112,9 @@ pipeline {
                      echo "=================================================" 
                      echo " Go to http://jenkinsciserver.tk:8070" 
                      }
+        }
+
+        stage ('Deploy Docker Image to EC2 instance - Build n') {
            when { 
             expression {
                    echo "actual build - ${currentBuild.number}"
