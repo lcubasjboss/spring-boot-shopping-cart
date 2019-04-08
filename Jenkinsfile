@@ -43,13 +43,23 @@ pipeline {
          stage ('Push Docker Image') {
             steps {
                 //withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-                    sh 'sudo /usr/bin/docker login -u lcubasibm -p DockerHub2019.'
+                
+                 docker.withRegistry('dockerHub','')
+                           
+                //    sh 'sudo /usr/bin/docker login -u lcubasibm -p DockerHub2019.'
                     sh 'sudo /usr/bin/docker push lcubasibm/shopping-cart:latest'
                     echo "Push Docker Image Completed"                
                 //} 
             }
         }   
         
+        stage ('Deploy Docker Image') {
+            steps {
+             sh 'ssh jenkins@172.31.51.31'
+             sh 'sudo /usr/bin/docker pull lcubasibm/shopping-cart:latest' 
+             sh 'sudo /usr/bin/docker run -d -p 8070:8070 --name shopping-cart shopping-cart:latest'              
+            }
+        }   
         
                /*
          stage (UnitTest') {
